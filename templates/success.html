@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>feedback done</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 100px;
+            text-align: center; /* Center the content horizontally */
+        }
+        .message {
+            font-size: 24px;
+            color: green;
+        }
+        .gif {
+            width: 400px;
+            display: block;
+            margin: 0 auto; /* Center the image horizontally */
+        }
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: darkgreen;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img class="gif" src="{{ url_for('static', filename='done.gif') }}" alt="Success GIF">
+        <p class="message">Successfully updated<br>ID and password</p>
+        <br>
+        <a class="button" href="/home">Home</a>
+    </div>
+</body>
+</html>
