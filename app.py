@@ -160,12 +160,8 @@ async def updatedata():
 
     # Run both scraping functions concurrently, but handle their success/failure independently
     try:
-        data_website_1, data_website_2 = await asyncio.gather(
-            scrape_website_1(),
-            scrape_website_2(),
-            return_exceptions=True  # This ensures exceptions from one task do not stop others
-        )
-
+        data_website_1 = await scrape_website_1()
+        data_website_2 = await scrape_website_2()
         # Handle the result of website 1 (Growatt)
         if isinstance(data_website_1, Exception):  # If website 1 raised an exception
             alert += "\n Issue in fetching Growatt data. \n"
