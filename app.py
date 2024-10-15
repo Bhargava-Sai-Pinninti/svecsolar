@@ -4,6 +4,8 @@ import json
 import os
 import asyncio
 from pyppeteer import launch
+import pytz
+
 
 app = Flask(__name__)
 
@@ -143,7 +145,6 @@ def index():
         return str(e)
 
 
-# Flask route to display the combined data
 @app.route('/updatedata')
 async def updatedata():
     json_file_path = 'data.json'
@@ -158,6 +159,9 @@ async def updatedata():
     else:
         stored_data = {"website_1": None, "website_2": None, "last_time_website_1": None, "last_time_website_2": None}
 
+    # Set IST timezone
+    india_tz = pytz.timezone('Asia/Kolkata')
+
     # Run both scraping functions concurrently, but handle their success/failure independently
     try:
         data_website_1 = await scrape_website_1()
@@ -167,14 +171,14 @@ async def updatedata():
             alert += "\n Issue in fetching Growatt data. \n"
         else:  # If website 1 was successful
             stored_data['website_1'] = data_website_1
-            stored_data['last_time_website_1'] = datetime.now().strftime('%Y-%m-%d / %H:%M')
+            stored_data['last_time_website_1'] = datetime.now(india_tz).strftime('%Y-%m-%d / %H:%M')
 
         # Handle the result of website 2 (Fronius)
         if isinstance(data_website_2, Exception):  # If website 2 raised an exception
             alert += "\n Issue fetching Fronius data. \n"
         else:  # If website 2 was successful
             stored_data['website_2'] = data_website_2
-            stored_data['last_time_website_2'] = datetime.now().strftime('%Y-%m-%d / %H:%M')
+            stored_data['last_time_website_2'] = datetime.now(india_tz).strftime('%Y-%m-%d / %H:%M')
 
     except Exception as e:
         alert += f"\nError fetching data: {e}"
