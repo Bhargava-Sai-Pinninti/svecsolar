@@ -22,13 +22,24 @@ body {
     padding: 0;
     height: 100vh;
     font-family: 'Arial', sans-serif;
-
-    background-image: url('{{ url_for('static', filename='bg.jpg') }}');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center center;
+    background: linear-gradient(135deg, #1e3c72, #2a5298, #4e73df);
+    background-size: 400% 400%; /* Optional: For animated gradient */
+    animation: gradientAnimation 15s ease infinite;
 }
+
+/* Optional Animation for a dynamic gradient effect */
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 
 .container{
     padding: 5px 0px;
@@ -248,9 +259,10 @@ ul {
 <body>
     <header>
         <a class="logo" href="/home"><img class="logo" src="{{ url_for('static', filename='logo.png') }}"></a>
-        <div class="loader" id="loader"></div><div class="loader" id="loader"></div><div class="loader" id="loader"></div><div class="loader" id="loader"></div>
+        <div class="loader" id="loader"></div><div class="loader" id="loader"></div><div class="loader" id="loader"></div>
         <ul>
             <li><a href="/updatep"><button>Credentials</button></a></li>
+            <li><a href="/about"><button>About</button></a></li>
         </ul>
     </header>
 
