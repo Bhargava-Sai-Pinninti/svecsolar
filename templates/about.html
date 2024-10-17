@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Monitor</title>
+
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background: #F5F5F5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #1976D2;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            width: 40px;
+            border-radius: 50%;
+        }
+
+        header ul {
+            list-style: none;
+            display: flex;
+        }
+
+        header ul li {
+            margin-left: 15px;
+        }
+
+        header ul li a button {
+            background-color: white;
+            color: #1976D2;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        header ul li a button:hover {
+            background-color: #E3F2FD;
+        }
+
+        /* Main Container */
+        .container {
+            margin-top: 80px;
+            width: 90%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Material-Style Card */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            color: #1976D2;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        .card p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Floating Loader */
+        .loader {
+            width: 15px;
+            height: 15px;
+            background-color: #0afd16;
+            border-radius: 50%;
+            animation: pulsate 1.5s infinite;
+            margin: 10px auto;
+        }
+
+        @keyframes pulsate {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <a href="/home">
+            <img class="logo" src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+        </a>
+        <ul>
+            <li><a href="/home"><button>Home</button></a></li>
+            <li><a href="/updatep"><button>Credentials</button></a></li>
+        </ul>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- About Us Card -->
+        <div class="card">
+            <h2>About Us</h2>
+            <p>Welcome to Solar Monitor! Stay connected with us to explore solar trends and data.</p>
+        </div>
+
+        <!-- Contact Details Card -->
+        <div class="card">
+            <h2>Contact Details</h2>
+            <p><b>Dr. Ch. Rambabu, M.Tech, Ph.D</b></p>
+            <p>
+                Gopa Suseela - 22A85A0205<br>
+                Nitturi Venkata Aditya Kumar - 22A85A0211<br>
+                Gubbala Bhavani Sankar - 21A81A0218<br>
+                Sudhagani Rama Krishna - 22A85A0203
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
