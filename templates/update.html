@@ -6,76 +6,92 @@
     <title>Update Credentials</title>
     <style>
         /* Global Styles */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background-color: #f0f4f7;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
         }
 
-        /* Navbar styles */
+        body {
+            background-color: #F5F5F5;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
         .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #1976D2;
+            color: white;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .navbar h3 {
-            font-size: 1.5rem;
             font-weight: 700;
-            margin: 0;
+            font-size: 1.5rem;
         }
 
         .navbar button {
-            background-color: #fff;
-            color: #6200ea;
+            background-color: white;
+            color: #1976D2;
             border: none;
-            padding: 8px 16px;
+            padding: 10px 20px;
+            border-radius: 50px;
             font-size: 1rem;
-            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin: 0px 40px;
+            transition: background-color 0.3s ease, transform 0.2s;
         }
 
         .navbar button:hover {
-            background-color: #ddd;
+            background-color: #E3F2FD;
+            transform: scale(1.05);
         }
 
-        /* Container styles */
+        /* Card Container */
         .container {
-            max-width: 500px;
-            margin: 100px auto 0;
+            max-width: 600px;
+            width: 90%;
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             padding: 30px;
-            background-color: #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+        }
+
+        .container img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+            border-radius: 12px;
         }
 
         h2 {
             text-align: center;
-            color: #333;
-            margin-bottom: 20px;
+            color: #424242;
             font-size: 1.75rem;
+            margin-bottom: 20px;
         }
 
+        /* Input Group */
         .input-group {
             margin-bottom: 20px;
         }
 
         .input-group label {
             display: block;
-            font-weight: bold;
             margin-bottom: 8px;
+            font-weight: 500;
             font-size: 1rem;
             color: #555;
         }
@@ -83,53 +99,45 @@
         .input-group input {
             width: 100%;
             padding: 12px;
-            font-size: 16px;
+            font-size: 1rem;
             border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            border-radius: 8px;
+            background-color: #FAFAFA;
             transition: border-color 0.3s ease;
         }
 
         .input-group input:focus {
-            border-color: #6200ea;
+            border-color: #1976D2;
             outline: none;
         }
 
-        /* Submit Button styles */
+        /* Submit Button */
         .submit-btn {
             width: 100%;
             padding: 12px;
-            background-color: #6200ea;
+            background-color: #1976D2;
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.3s ease, transform 0.2s;
         }
 
         .submit-btn:hover {
-            background-color: #3700b3;
-            transform: translateY(-3px);
+            background-color: #1565C0;
+            transform: translateY(-2px);
         }
 
         .submit-btn:active {
             transform: translateY(0);
         }
 
-        img{
-    height: 100px;
-    width: 100px;
-    margin: 1px;
-    border-radius: 8px;
-}
-
         /* Responsive Design */
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
-                margin-top: 80px;
             }
 
             h2 {
@@ -137,12 +145,12 @@
             }
 
             .navbar h3 {
-                font-size: 1.2rem;
+                font-size: 1.25rem;
             }
 
             .navbar button {
-                padding: 6px 12px;
-                font-size: 0.9rem;
+                padding: 8px 16px;
+                font-size: 0.875rem;
             }
         }
     </style>
@@ -151,13 +159,13 @@
 
     <!-- Navbar -->
     <div class="navbar">
-        <h3><u>Solar Monitoring</u></h3>
+        <h3>Solar Monitoring</h3>
         <a href="/home"><button>Home</button></a>
     </div>
 
     <!-- Container for Website 1 Credentials -->
     <div class="container">
-        <center><img src="{{ url_for('static', filename='w11.png') }}"></center>
+        <center><img src="{{ url_for('static', filename='w11.png') }}" alt="Website 1"></center>
         <h2>Update Credentials</h2>
         <form action="/update_website1" method="POST">
             <div class="input-group">
@@ -174,9 +182,7 @@
 
     <!-- Container for Website 2 Credentials -->
     <div class="container" style="margin-top: 30px;">
-        <center>
-            <img src="{{ url_for('static', filename='w2.svg') }}">
-        </center>
+        <center><img src="{{ url_for('static', filename='w2.svg') }}" alt="Website 2"></center>
         <h2>Update Credentials</h2>
         <form action="/update_website2" method="POST">
             <div class="input-group">
