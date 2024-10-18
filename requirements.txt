@@ -43,53 +43,7 @@ typing_extensions==4.12.2
 urllib3==1.26.20
 websockets==10.4
 Werkzeug==3.0.4
-zipp==3.20.2
-pyppeteer>=2.0.0
 hypercorn
-# Web Framework
-Flask==3.0.3
-gunicorn==20.1.0
-
-# ASGI Server
-uvicorn==0.22.0
-
-# Pyppeteer with Chromium support
 pyppeteer[chromium]==2.0.2
-
-# Other Dependencies
-beautifulsoup4==4.12.3
-requests==2.31.0
-Jinja2==3.1.4
-Werkzeug==3.0.4
-typing_extensions==4.12.2
-click==8.1.7
-itsdangerous==2.2.0
-certifi==2024.8.30
-charset-normalizer==3.3.2
-idna==3.7
-urllib3==1.26.20
-tqdm==4.66.5
-
-# Optional: Dependencies for System Compatibility
-psutil==5.9.5
-pyee==11.1.1
-
-# For Parsing and Scraping
-lxml==5.1.0
-soupsieve==2.5
-
-# Cryptography and Security
-cryptography==41.0.7
-pyOpenSSL==23.2.0
-
-# AWS (if required)
-boto3==1.35.37
-botocore==1.35.37
-jmespath==1.0.1
-python-dateutil==2.8.2
-PyYAML==6.0.1
-
-# Environment Management
-appdirs==1.4.4
 zipp==3.20.2
 
