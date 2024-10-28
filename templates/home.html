@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solar Monitor</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
     <style>
         * {
@@ -35,10 +36,24 @@
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
         }
 
-        .logo img {
-            width: 40px;
-            height: 40px;
+        header h3 {
+            font-weight: 500;
+            font-size: 1.2rem;
+            color: #61dafb;
         }
+
+        .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Add space between the logo and the heading */
+}
+
+.logo-container img {
+    width: 40px;
+    height: 40px;
+}
+
+
 
         .nav-links {
             display: flex;
@@ -135,9 +150,10 @@
 </head>
 <body>
     <header>
-        <a class="logo" href="/home">
+        <div class="logo-container">
             <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
-        </a>
+            <h3>Solar Monitor</h3>
+        </div>
         <ul class="nav-links">
             <li><a href="/updatep"><button>Credentials</button></a></li>
             <li><a href="/about"><button>About</button></a></li>
@@ -184,6 +200,13 @@
                     <span class="data-label">Last Update:</span>
                     <span>{{ data.last_time_website_1 }}</span>
                 </div>
+
+                {% if data.alert_data1 %}
+                <div class="data-item">
+                    <span class="data-label">Error Log:</span>
+                    <span>{{ data.alert_data1 }}</span>
+                </div>
+                {% endif %}
             </div>
         </div>
 
@@ -218,6 +241,12 @@
                     <span class="data-label">Last Update:</span>
                     <span>{{ data.last_time_website_2 }}</span>
                 </div>
+                {% if data.alert_data2 %}
+                <div class="data-item">
+                    <span class="data-label">Error Log:</span>
+                    <span>{{ data.alert_data2 }}</span>
+                </div>
+                {% endif %}
             </div>
         </div>
 
@@ -264,12 +293,22 @@
                     <span class="data-label">Last Update:</span>
                     <span>{{ data.last_time_website_3 }}</span>
                 </div>
+                {% if data.alert_data3 %}
+                <div class="data-item">
+                    <span class="data-label">Error Log:</span>
+                    <span>{{ data.alert_data3 }}</span>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 
     <footer class="footer">
-        <p>&copy; 2024 Solar Monitor. All rights reserved.</p>
+        {% if data.alert_data %}
+            <p>{{ data.alert_data }}</p><br>
+            <p> Trying to Resolve the issues ...</p><br>
+        {% endif %}
+        <p>&copy; SVEC Solar Monitor</p>
     </footer>
     <script>
         // Reload the page every 60 seconds (60000 milliseconds)

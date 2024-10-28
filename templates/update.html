@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Credentials</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
     <style>
         * {
             margin: 0;
@@ -23,13 +25,14 @@
             min-height: 100vh;
         }
 
-        /* Navbar */
-        .navbar {
+        header {
             position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
             background-color: rgba(20, 20, 20, 0.9);
             backdrop-filter: blur(15px);
+            color: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -38,39 +41,53 @@
             z-index: 10;
         }
 
-        .navbar-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .navbar-logo img {
+        .logo {
             width: 40px;
             height: 40px;
             border-radius: 50%;
         }
 
-        .navbar h3 {
-            font-weight: 500;
-            font-size: 1.5rem;
-            color: #61dafb;
+        header ul {
+            list-style: none;
+            display: flex;
         }
 
-        .navbar button {
+        header ul li {
+            margin-left: 15px;
+        }
+
+        header ul li a button {
             background-color: transparent;
             border: 2px solid #61dafb;
             color: white;
+            font-weight: 600;
             padding: 5px 10px;
             border-radius: 20px;
-            font-size: 1rem;
-            cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
         }
 
-        .navbar button:hover {
+        header ul li a button:hover {
             background-color: #303233;
-            transform: scale(1.05);
+            transform: translateY(-4px);
         }
+
+        header h3 {
+            font-weight: 500;
+            font-size: 1.2rem;
+            color: #61dafb;
+        }
+
+        .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Add space between the logo and the heading */
+}
+
+.logo-container img {
+    width: 40px;
+    height: 40px;
+}
+
 
         /* Main Layout */
         .main-content {
@@ -192,13 +209,17 @@
 <body>
 
     <!-- Navbar -->
-    <div class="navbar">
-        <div class="navbar-logo">
+    <header>
+        <div class="logo-container">
             <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
-            <h3>Solar Monitoring</h3>
+            <h3>Solar Monitor</h3>
         </div>
-        <a href="/home"><button>Home</button></a>
-    </div>
+        <ul>
+            <li><a href="/home"><button>Home</button></a></li>
+            <li><a href="/about"><button>About</button></a></li>
+
+        </ul>
+    </header>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -256,7 +277,7 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 Solar Monitoring. All Rights Reserved. <a href="/privacy">Privacy Policy</a></p>
+        <p>&copy; SVEC Solar Monitor</p>
     </footer>
 
 </body>

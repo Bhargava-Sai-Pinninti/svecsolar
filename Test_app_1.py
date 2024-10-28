@@ -11,7 +11,6 @@ app = Flask(__name__)
 # Store global references to browser and page
 browser_1,page_1 = None,None
 
-
 async def login_1():
         print("working in login_2() ---- 2.2 \n")
         global browser_1, page_1

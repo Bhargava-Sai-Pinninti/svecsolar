@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solar Monitor</title>
+    <title>About SVEC Solar Monitor</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
-
     <style>
         /* General Reset */
         * {
@@ -20,11 +20,9 @@
         body {
             background: linear-gradient(145deg, #0f0f0f, #3d3d3d);
             color: white;
-            height: 100vh;
+            min-height: 100vh; /* Ensure full height */
             display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
+            flex-direction: column; /* Stack content */
         }
 
         /* Header Styles */
@@ -44,10 +42,15 @@
             z-index: 10;
         }
 
-        .logo {
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-container img {
             width: 40px;
             height: 40px;
-            border-radius: 50%;
         }
 
         header ul {
@@ -74,23 +77,29 @@
             transform: translateY(-4px);
         }
 
-        /* Main Container */
-        .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            width: 90%;
-            max-width: 1200px;
+        header h3 {
+            font-weight: 500;
+            font-size: 1.2rem;
+            color: #61dafb;
         }
 
-        /* Centering the Container */
+        /* Main Wrapper */
         .content-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100%;
-            width: 100%;
+            flex: 1; /* Take up remaining space */
             margin-top: 70px; /* Offset for fixed header */
+            width: 100%;
+        }
+
+        /* Grid Container */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: auto;
+            max-width: 1200px;
         }
 
         /* Card Styling */
@@ -118,25 +127,24 @@
             line-height: 1.6;
         }
 
-        /* Loader */
-        .loader {
-            width: 15px;
-            height: 15px;
-            background-color: #0afd16;
-            border-radius: 50%;
-            animation: pulsate 1.5s infinite;
-            margin: 10px auto;
+        /* Footer Styling */
+        footer {
+            background-color: #0f0f0f;
+            padding: 10px 20px;
+            text-align: center;
+            color: #aaa;
+            font-size: 0.875rem;
+            box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.5);
         }
 
-        @keyframes pulsate {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.5);
-                opacity: 0.5;
-            }
+        footer a {
+            color: #61dafb;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: white;
         }
 
         /* Responsive Design */
@@ -152,9 +160,10 @@
 <body>
     <!-- Header -->
     <header>
-        <a href="/home">
-            <img class="logo" src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
-        </a>
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <h3>Solar Monitor</h3>
+        </div>
         <ul>
             <li><a href="/home"><button>Home</button></a></li>
             <li><a href="/updatep"><button>Credentials</button></a></li>
@@ -175,14 +184,19 @@
                 <h2>Contact Details</h2>
                 <p><b>Dr. Ch. Rambabu, M.Tech, Ph.D</b></p>
                 <p>
-                    Gopa Suseela - 22A85A0205<br>
-                    Nitturi Venkata Aditya Kumar - 22A85A0211<br>
-                    Gubbala Bhavani Sankar - 21A81A0218<br>
-                    Sudhagani Rama Krishna - 22A85A0203
+                    G.Suseela - 22A85A0205<br>
+                    N.Venkata Aditya Kumar - 22A85A0211<br>
+                    G.Bhavani Sankar - 21A81A0218<br>
+                    S.Rama Krishna - 22A85A0203
                 </p>
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; SVEC Solar Monitor</p>
+    </footer>
 </body>
 
 </html>

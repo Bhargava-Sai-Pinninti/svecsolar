@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template, jsonify
-
 import threading
 from datetime import datetime 
 import json
@@ -15,83 +14,79 @@ browser_2,page_2 = None,None
 # Global variables to store browser and page objects for each website
 browser_3, page_3 = None, None
 
-
 async def login_1():
-    try:
-        print("<S1> working in login_1() ---- 2.2 \n")
-        global browser_1, page_1
-        json_file_path = 'website1_credentials.json'
-        with open(json_file_path, 'r') as json_file:
-            creds = json.load(json_file)
-        # Launch browser in headless mode
-        browser_1 = await launch(headless=True, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False)
-        page_1 = await browser_1.newPage()
-
-        # Step 1: Navigate to login page
-        await page_1.goto("https://server.growatt.com/login", {'waitUntil': 'networkidle2','timeout': 190000})
-        await asyncio.sleep(1)
-        # Step 2: Fill in login details
-        await page_1.type('#val_loginAccount', creds['user_id'])
-        await page_1.type('#val_loginPwd', creds['password'])
-
-
-        # Step 3: Click login button and wait for navigation to complete
-        await page_1.click('.loginB')
-        await page_1.waitForNavigation({'waitUntil': 'networkidle2','timeout': 190000})
-
-        # Step 4: Click the "All Devices" button and wait for the page to load
         try:
-            await page_1.waitForSelector('.btn_toAllDevices', {'visible': True,'timeout': 190000})
+            print("<<S1>> working in login_1() ---- 2.2 \n")
+            global browser_1, page_1
+            json_file_path = 'website1_credentials.json'
+            with open(json_file_path, 'r') as json_file:
+                creds = json.load(json_file)
+            # Launch browser in headless mode
+            browser_1 = await launch(headless=True, handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False)
+            page_1 = await browser_1.newPage()
+
+            # Step 1: Navigate to login page
+            await page_1.goto("https://server.growatt.com/login", {'waitUntil': 'networkidle2','timeout': 99999})
+            await asyncio.sleep(1)
+            # Step 2: Fill in login details
+            await page_1.type('#val_loginAccount', creds['user_id'])
+            await page_1.type('#val_loginPwd', creds['password'])
+
+
+            # Step 3: Click login button and wait for navigation to complete
+            await page_1.click('.loginB')
+            await page_1.waitForNavigation({'waitUntil': 'networkidle2','timeout': 99999})
+
+            # Step 4: Click the "All Devices" button and wait for the page to load
+            
+            await page_1.waitForSelector('.btn_toAllDevices', {'visible': True,'timeout': 99999})
             await page_1.click('.btn_toAllDevices')
             await asyncio.sleep(1)
             # Wait for the device panel to load (increased timeout)
-            await page_1.waitForSelector('.devicePageDataPanel', {'visible': True,'timeout': 190000})
+            await page_1.waitForSelector('.devicePageDataPanel', {'visible': True,'timeout': 99999})
             await asyncio.sleep(1)
-            print("<S1> Login successfulin S1 --- \n")
+            print("\n<<s1>> Login successful! in 1 --- 3")
             return page_1
         except Exception as e:
-            print(f"<S1> Error during navigation or waiting for device panel in login 1(): {e} \n")
-            return e
-    except Exception as e:
-            print(f"<S1> Error in login 1(){e} \n")
+            if browser_1:
+                await browser_1.close()
+            browser_1,page_1 = None,None
+            print(f"<<S1>> Error in S1 : {e}")
             return e
         
 async def scrape_data_1():
     try:
-        print("<<S1>> working in data scrape_data_1() ---- 2\n")
-        global page_1  # Use the global page object
+        print("<<s1>> working in data scrape_data()... ---- 2\n")
+        global browser_1,page_1  # Use the global page object
         if not page_1:
-            print("<<S1>> issue in getting page so relogin in S1  ---- 2.1\n")
+            print("<<s1>> issue in getting page so relogin... ---- 2.1\n")
             page_1=await login_1()
-            print("<<S1>> working in data scrape_data() after relog done... 3\n")
+            print("<<s1>> working in data scrape_data() after relog done... 3 \n")
         else:
-            print("<<S1>> page1 get from global... 3\n")
+            print("page1 get from global... 3\n")
             # Step 6: Scrape plant data
             # Step 5: Extract data from the tables
-        try:
-            await asyncio.sleep(3)
-            power_data = await page_1.evaluate('''() => {
-                    return {
-                        currentPower: document.querySelector('.val_device_plantPac')?.innerText || "N/A",
-                        ratedPower: document.querySelector('.val_device_plantNominalPower')?.innerText || "N/A",
-                        generationToday: document.querySelector('.val_device_plantEToday')?.innerText || "N/A",
-                        generationThisMonth: document.querySelector('.val_device_plantEMonth')?.innerText || "N/A",
-                        totalGeneration: document.querySelector('.val_device_plantETotal')?.innerText || "N/A",
-                        revenueToday: document.querySelector('.val_device_plantMToday')?.innerText || "N/A",
-                        revenueThisMonth: document.querySelector('.val_device_plantMMonth')?.innerText || "N/A",
-                        totalRevenue: document.querySelector('.val_device_plantMTotal')?.innerText || "N/A"
-                    };
-                }''')
-            if power_data:
-                print("<<S1>> yes done data getted \n")
-            return power_data
-        except Exception as e:
-                print(f"<<S1>> Error Scrape_Data_1: {e} \n")
-                return e
+        await asyncio.sleep(3)
+        power_data = await page_1.evaluate('''() => {
+                return {
+                    currentPower: document.querySelector('.val_device_plantPac')?.innerText || "N/A",
+                    ratedPower: document.querySelector('.val_device_plantNominalPower')?.innerText || "N/A",
+                    generationToday: document.querySelector('.val_device_plantEToday')?.innerText || "N/A",
+                    generationThisMonth: document.querySelector('.val_device_plantEMonth')?.innerText || "N/A",
+                    totalGeneration: document.querySelector('.val_device_plantETotal')?.innerText || "N/A",
+                    revenueToday: document.querySelector('.val_device_plantMToday')?.innerText || "N/A",
+                    revenueThisMonth: document.querySelector('.val_device_plantMMonth')?.innerText || "N/A",
+                    totalRevenue: document.querySelector('.val_device_plantMTotal')?.innerText || "N/A"
+                };
+            }''')
+        return power_data
     except Exception as e:
-                print(f"<<S1>> Error in Scrape_Data_1: {e} \n")
-                return e
-    
+            if browser_1:
+                await browser_1.close()
+            browser_1,page_1 = None,None
+            print(f"Error extracting data in 1: {e}")
+            return e
+  
 async def login_2():
     try:
         print("<S2> working in login_2() ---- 2.2 \n")
@@ -105,24 +100,27 @@ async def login_2():
             page_2 = await browser_2.newPage()
 
             # Navigate to login page and perform login
-            await page_2.goto("https://www.solarweb.com/Account/ExternalLogin", {'waitUntil': 'networkidle2', 'timeout': 90000})
-            await asyncio.sleep(1)
+            await page_2.goto("https://www.solarweb.com/Account/ExternalLogin", {'waitUntil': 'networkidle2', 'timeout': 99999})
+            await asyncio.sleep(2)
 
             # Fill in login credentials
-            await page_2.type('input[name="usernameUserInput"]', creds['user_id'], {'delay': 100})
-            await page_2.type('input[name="password"]', creds['password'], {'delay': 100})
-            await asyncio.sleep(2)
+            await page_2.type('input[name="usernameUserInput"]', creds['user_id'], {'delay': 150})
+            await page_2.type('input[name="password"]', creds['password'], {'delay': 150})
+            await asyncio.sleep(1)
 
             # Click login button
             await page_2.waitForSelector('.btn-fro.btn-fro-primary.btn-fro-medium.margin-top-light.keypress-btn', {'visible': True})
             await page_2.click('.btn-fro.btn-fro-primary.btn-fro-medium.margin-top-light.keypress-btn')
 
             # Wait for login to complete
-            await page_2.waitForNavigation({'waitUntil': 'networkidle2', 'timeout': 90000})
+            await page_2.waitForNavigation({'waitUntil': 'networkidle2', 'timeout': 99999})
             print("<S2> Logged in successfully in S2 ----\n")
         
         return page_2  # Return the page object
     except Exception as e:
+        if browser_2:
+                await browser_2.close()
+        browser_2,page_2 = None,None
         print(f" <S2> Error in login 2(){e} \n")
         return e
 
@@ -130,7 +128,7 @@ async def scrape_data_2():
     try:
         print("<<S2>> working in data scrape_data_2()... ---- 2\n")
         """Scrape data using the existing page object."""
-        global page_2  # Use the global page object
+        global browser_2,page_2  # Use the global page object
         if not page_2:
             print("<<S2>> issue in getting page so relogin in S2 login ---- 2.1\n")
             page_2=await login_2()
@@ -139,7 +137,7 @@ async def scrape_data_2():
             print("<<S2>> page2 get from global... 3\n")
 
         # Wait for the data container to load
-        await page_2.waitForSelector('div[data-swiper-slide-index="0"]', {'timeout': 30000})
+        await page_2.waitForSelector('div[data-swiper-slide-index="0"]', {'timeout': 99999})
         await asyncio.sleep(2)
 
         # Extract the required data
@@ -164,6 +162,9 @@ async def scrape_data_2():
         return power_data
     
     except Exception as e:
+        if browser_2:
+            await browser_2.close()
+        browser_2,page_2 = None,None
         print(f"Error in  Scrape_data_2(){e} \n")
         return e
 
@@ -181,10 +182,10 @@ async def login_3():
 
             try:
                 # Step 1: Navigate to the login page
-                await page_3.goto("https://web3.isolarcloud.com.hk/#/login", {'waitUntil': 'networkidle2', 'timeout': 190000})
+                await page_3.goto("https://web3.isolarcloud.com.hk/#/login", {'waitUntil': 'networkidle2', 'timeout': 99999})
 
                 # Allow some time for rendering
-                await asyncio.sleep(3)
+                await asyncio.sleep(2)
 
                 # Step 2: Extract input field IDs dynamically
                 inputs = await page_3.evaluate('''() => {
@@ -200,8 +201,8 @@ async def login_3():
                     raise Exception("Input fields not found.")
 
                 # Step 3: Enter credentials
-                await page_3.type(f'#{inputs["accountId"]}', creds['user_id'], {'delay': 100})
-                await page_3.type(f'#{inputs["passwordId"]}', creds['password'], {'delay': 100})
+                await page_3.type(f'#{inputs["accountId"]}', creds['user_id'], {'delay': 120})
+                await page_3.type(f'#{inputs["passwordId"]}', creds['password'], {'delay': 120})
 
                 # Step 4: Click the login button
                 login_button = await page_3.evaluateHandle('''() => {
@@ -216,15 +217,21 @@ async def login_3():
                     raise Exception("<S3> Login button not found. in 3 \n")
 
                 # Step 5: Wait for the plant data table to load
-                await page_3.waitForSelector('.plant-name-column', {'timeout': 90000})
+                await page_3.waitForSelector('.plant-name-column', {'timeout': 99999})
                 print("\n <S3> Login successful! in S3 --- \n")
-                await asyncio.sleep(3)
+                await asyncio.sleep(2)
                 return page_3
             except Exception as e:
+                if browser_3:
+                    await browser_3.close()
+                browser_3,page_3 = None,None
                 print(f"<S3> Error during scraping in login_3(): {e} \n")
                 return e
         return page_3  # Return the page object
     except Exception as e:
+                if browser_3:
+                    await browser_3.close()
+                browser_3,page_3 = None,None
                 print(f"<S3> Error during scraping in  login_3(): {e} \n")
                 return e
 
@@ -232,7 +239,7 @@ async def scrape_data_3():
     try:
         print("<<S3>> working in data scrape_data_3()... ---- 2\n")
         """Scrape data using the existing page object."""
-        global page_3  # Use the global page object
+        global browser_3,page_3  # Use the global page object
         if not page_3:
             print("<<S3>> issue in getting page so relogin in S3... ---- 2.1\n")
             page_3=await login_3()
@@ -240,6 +247,7 @@ async def scrape_data_3():
         else:
             print("<<S3>> page3 get from global... 3\n")
             # Step 6: Scrape plant data
+        await asyncio.sleep(2)
         power_data = await page_3.evaluate('''() => {
                 const rows = Array.from(document.querySelectorAll('tr.el-table__row'));
                 return rows.map(row => {
@@ -262,14 +270,21 @@ async def scrape_data_3():
             print("<<S3>> yes done data getted ---- \n")
         return power_data
     except Exception as e:
+        if browser_3:
+                await browser_3.close()
+        browser_3,page_3 = None,None
         print(f" <<S3>> Error in Scrape_data_3(): {e} \n")
         return e
 
 async def update_data():
+    global browser_1,page_1,browser_2,page_2,browser_3,page_3
     try:
         with app.app_context():  # Push the app context
             json_file_path = 'data.json'
             alert = ""
+            alert_1=""
+            alert_2=""
+            alert_3=""
             data_website_1, data_website_2 , data_website_3 = None, None ,None
 
             # Load existing data
@@ -290,27 +305,27 @@ async def update_data():
 
                 # Handle scraping results
                 if isinstance(data_website_1, Exception):
-                    alert += "Issue in fetching Growatt data. \n"
+                    alert_1 += "Growatt Not Updated !!"
                 else:
                     stored_data['website_1'] = data_website_1
                     stored_data['last_time_website_1'] = datetime.now().strftime('%Y-%m-%d / %H:%M')
 
                 if isinstance(data_website_2, Exception):
-                    alert += "\n Issue fetching Fronius data. \n"
+                    alert_2 += "Fronius Not Updated !!"
                 else:
                     stored_data['website_2'] = data_website_2
                     stored_data['last_time_website_2'] = datetime.now().strftime('%Y-%m-%d / %H:%M')
 
                 if isinstance(data_website_3, Exception):  # If website 3 raised an exception
-                    alert += "\n Issue fetching iSolar Cloud data. \n"
+                    alert_3 += "iSolar Cloud Not Updated !!"
                 else:  # If website 3 was successful
                     stored_data['website_3'] = data_website_3[0]
                     stored_data['last_time_website_3'] = datetime.now().strftime('%Y-%m-%d / %H:%M')
 
             except Exception as e:
-                alert += f"Error fetching data: {e} \n"
+                alert += f"Error fetching data: {e} ! \n"
 
-            stored_data["alert_data"] = alert
+            stored_data["alert_data"],stored_data["alert_data1"],stored_data["alert_data2"],stored_data["alert_data3"]  = alert,alert_1,alert_2,alert_3
 
             # Save the updated data to JSON file
             with open(json_file_path, 'w') as json_file:
@@ -323,6 +338,23 @@ async def update_data():
     except Exception as e:
         print(f"Error in update(): {e} \n")
         return e
+    
+    try:
+        if page_1:
+            print("refreshing p1 \n")
+            await page_1.reload({'waitUntil': 'networkidle2', 'timeout': 99999})
+            print("refreshing done p1 \n")
+        if page_2:
+            print("refreshing p2 \n")
+            await page_2.reload({'waitUntil': 'networkidle2', 'timeout': 99999})
+            print("refreshing done p2 \n")
+        if page_3:
+            print("refreshing p3 \n")
+            await page_3.reload({'waitUntil': 'networkidle2', 'timeout': 99999})
+            print("refreshing done p3 \n")
+    except Exception as e:
+        print(f"Error in refresh : {e} \n")
+        return e
 
 async def run_updates():
     """Run updates periodically in a loop."""
@@ -330,7 +362,7 @@ async def run_updates():
         try:
             print("\n started in run_updates()  ---- 1")
             await update_data()
-            await asyncio.sleep(60)  # Adjust interval as needed
+            await asyncio.sleep(90)  # Adjust interval as needed
             print("\n ended in run_updates() ---- end")
         except Exception as e:
             print(f"Exception in run_updates: {e}")
@@ -485,7 +517,6 @@ def update_website2():
     except Exception as e:
         print(f"Error extracting data: {e}")
         return render_template('error.html')
-    
 
 # Route to update website 3 credentials
 @app.route('/update_website3', methods=['POST'])
