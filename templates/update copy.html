@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Credentials</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #F5F5F5;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #1976D2;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h3 {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .navbar button {
+            background-color: white;
+            color: #1976D2;
+            border: none;
+            padding: 10px 10px;
+            border-radius: 60px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        .navbar button:hover {
+            background-color: #E3F2FD;
+            transform: scale(1.05);
+        }
+
+        /* Card Container */
+        .container {
+            max-width: 600px;
+            width: 90%;
+            margin-top: 10px;
+            background-color: white;
+            border-radius: 14px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+        }
+
+        .container img {
+            width: 100px;
+            height: 100px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #424242;
+            font-size: 1.75rem;
+            margin-bottom: 20px;
+        }
+
+        /* Input Group */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 5px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #FAFAFA;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: #1976D2;
+            outline: none;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 8px;
+            background-color: #1976D2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #1565C0;
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .navbar h3 {
+                font-size: 1.25rem;
+            }
+
+            .navbar button {
+                padding: 8px 16px;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <h3>Solar Monitoring</h3>
+        <a href="/home"><button>Home</button></a>
+    </div>
+
+    <!-- Container for Website 1 Credentials -->
+    <div class="container">
+        <center><img src="{{ url_for('static', filename='w1.png') }}" alt="Website 1"></center>
+        <h2>Update Credentials</h2>
+        <form action="/update_website1" method="POST">
+            <div class="input-group">
+                <label for="user_id1">User ID</label>
+                <input type="text" id="user_id1" name="user_id1" placeholder="Enter User ID" required autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label for="password1">Password</label>
+                <input type="password" id="password1" name="password1" placeholder="Enter Password" required autocomplete="off">
+            </div>
+            <button type="submit" class="submit-btn">Update</button>
+        </form>
+    </div>
+
+    <!-- Container for Website 2 Credentials -->
+    <div class="container" style="margin-top: 30px;">
+        <center><img src="{{ url_for('static', filename='w2.png') }}"></center>
+        <h2>Update Credentials</h2>
+        <form action="/update_website2" method="POST">
+            <div class="input-group">
+                <label for="user_id2">User ID</label>
+                <input type="text" id="user_id2" name="user_id2" placeholder="Enter User ID" required autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label for="password2">Password</label>
+                <input type="password" id="password2" name="password2" placeholder="Enter Password" required autocomplete="off">
+            </div>
+            <button type="submit" class="submit-btn">Update</button>
+        </form>
+    </div>
+
+</body>
+</html>

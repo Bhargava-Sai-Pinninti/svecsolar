@@ -4,129 +4,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Credentials</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
     <style>
-        /* Global Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background-color: #F5F5F5;
-            padding-top: 80px;
+            background: linear-gradient(145deg, #0f0f0f, #3d3d3d);
+            color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding-top: 80px;
             min-height: 100vh;
         }
 
-        /* Navbar Styles */
+        /* Navbar */
         .navbar {
             position: fixed;
             top: 0;
-            left: 0;
             width: 100%;
-            background-color: #1976D2;
-            color: white;
-            padding: 10px 20px;
+            background-color: rgba(20, 20, 20, 0.9);
+            backdrop-filter: blur(15px);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 5px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
         }
 
         .navbar h3 {
-            font-weight: 700;
+            font-weight: 500;
             font-size: 1.5rem;
+            color: #61dafb;
         }
 
         .navbar button {
-            background-color: white;
-            color: #1976D2;
-            border: none;
-            padding: 10px 10px;
-            border-radius: 60px;
+            background-color: transparent;
+            border: 2px solid #61dafb;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
             font-size: 1rem;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         .navbar button:hover {
-            background-color: #E3F2FD;
+            background-color: #303233;
             transform: scale(1.05);
+        }
+
+        /* Main Layout */
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
         }
 
         /* Card Container */
         .container {
-            max-width: 600px;
-            width: 90%;
-            margin-top: 10px;
-            background-color: white;
-            border-radius: 14px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            padding: 10px;
+            max-width: 350px;
+            width: 100%;
+            background: linear-gradient(145deg, #252525, #1a1a1a);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5), -5px -5px 15px rgba(255, 255, 255, 0.05);
         }
 
         .container img {
-            width: 100px;
-            height: 100px;
-            padding: 5px;
-            border-radius: 5px;
+            width: 99%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
         }
 
         h2 {
             text-align: center;
-            color: #424242;
-            font-size: 1.75rem;
             margin-bottom: 20px;
+            color: #61dafb;
+            font-weight: 600;
         }
 
         /* Input Group */
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .input-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
-            font-size: 1rem;
-            color: #555;
+            color: #ccc;
         }
 
         .input-group input {
             width: 100%;
-            padding: 5px;
+            padding: 8px;
             font-size: 1rem;
-            border: 1px solid #ddd;
+            border: 1px solid #555;
             border-radius: 8px;
-            background-color: #FAFAFA;
-            transition: border-color 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: border-color 0.3s;
         }
 
         .input-group input:focus {
-            border-color: #1976D2;
+            border-color: #61dafb;
             outline: none;
         }
 
         /* Submit Button */
         .submit-btn {
             width: 100%;
-            padding: 8px;
-            background-color: #1976D2;
-            color: white;
+            padding: 10px;
+            background-color: #61dafb;
+            color: #0f0f0f;
             border: none;
             border-radius: 8px;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
         .submit-btn:hover {
-            background-color: #1565C0;
+            background-color: #55c2e0;
             transform: translateY(-2px);
         }
 
@@ -134,23 +158,33 @@
             transform: translateY(0);
         }
 
+        /* Footer */
+        footer {
+            margin-top: auto;
+            width: 100%;
+            background-color: #0f0f0f;
+            padding: 10px 20px;
+            text-align: center;
+            color: #aaa;
+            font-size: 0.875rem;
+            box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        footer a {
+            color: #61dafb;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
         /* Responsive Design */
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            .navbar h3 {
-                font-size: 1.25rem;
-            }
-
-            .navbar button {
-                padding: 8px 16px;
-                font-size: 0.875rem;
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
@@ -159,43 +193,71 @@
 
     <!-- Navbar -->
     <div class="navbar">
-        <h3>Solar Monitoring</h3>
+        <div class="navbar-logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <h3>Solar Monitoring</h3>
+        </div>
         <a href="/home"><button>Home</button></a>
     </div>
 
-    <!-- Container for Website 1 Credentials -->
-    <div class="container">
-        <center><img src="{{ url_for('static', filename='w11.png') }}" alt="Website 1"></center>
-        <h2>Update Credentials</h2>
-        <form action="/update_website1" method="POST">
-            <div class="input-group">
-                <label for="user_id1">User ID</label>
-                <input type="text" id="user_id1" name="user_id1" placeholder="Enter User ID" required autocomplete="off">
-            </div>
-            <div class="input-group">
-                <label for="password1">Password</label>
-                <input type="password" id="password1" name="password1" placeholder="Enter Password" required autocomplete="off">
-            </div>
-            <button type="submit" class="submit-btn">Update</button>
-        </form>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Container for Website 1 Credentials -->
+        <div class="container">
+            <center><img src="{{ url_for('static', filename='w1.png') }}" alt="Website 1"></center>
+            <h2>Update Credentials</h2>
+            <form action="/update_website1" method="POST">
+                <div class="input-group">
+                    <label for="user_id1">User ID</label>
+                    <input type="text" id="user_id1" name="user_id1" placeholder="Enter User ID" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="password1">Password</label>
+                    <input type="password" id="password1" name="password1" placeholder="Enter Password" required autocomplete="off">
+                </div>
+                <button type="submit" class="submit-btn">Update</button>
+            </form>
+        </div>
+
+        <!-- Container for Website 2 Credentials -->
+        <div class="container">
+            <center><img src="{{ url_for('static', filename='w2.png') }}" alt="Website 2"></center>
+            <h2>Update Credentials</h2>
+            <form action="/update_website2" method="POST">
+                <div class="input-group">
+                    <label for="user_id2">User ID</label>
+                    <input type="text" id="user_id2" name="user_id2" placeholder="Enter User ID" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="password2">Password</label>
+                    <input type="password" id="password2" name="password2" placeholder="Enter Password" required autocomplete="off">
+                </div>
+                <button type="submit" class="submit-btn">Update</button>
+            </form>
+        </div>
+
+        <!-- Container for Website 3 Credentials -->
+        <div class="container">
+            <center><img src="{{ url_for('static', filename='w3.png') }}" alt="Website 3"></center>
+            <h2>Update Credentials</h2>
+            <form action="/update_website3" method="POST">
+                <div class="input-group">
+                    <label for="user_id3">User ID</label>
+                    <input type="text" id="user_id3" name="user_id3" placeholder="Enter User ID" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="password3">Password</label>
+                    <input type="password" id="password3" name="password3" placeholder="Enter Password" required autocomplete="off">
+                </div>
+                <button type="submit" class="submit-btn">Update</button>
+            </form>
+        </div>
     </div>
 
-    <!-- Container for Website 2 Credentials -->
-    <div class="container" style="margin-top: 30px;">
-        <center><img src="{{ url_for('static', filename='w2.svg') }}" alt="Website 2"></center>
-        <h2>Update Credentials</h2>
-        <form action="/update_website2" method="POST">
-            <div class="input-group">
-                <label for="user_id2">User ID</label>
-                <input type="text" id="user_id2" name="user_id2" placeholder="Enter User ID" required autocomplete="off">
-            </div>
-            <div class="input-group">
-                <label for="password2">Password</label>
-                <input type="password" id="password2" name="password2" placeholder="Enter Password" required autocomplete="off">
-            </div>
-            <button type="submit" class="submit-btn">Update</button>
-        </form>
-    </div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Solar Monitoring. All Rights Reserved. <a href="/privacy">Privacy Policy</a></p>
+    </footer>
 
 </body>
 </html>

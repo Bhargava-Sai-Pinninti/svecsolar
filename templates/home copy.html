@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Monitor</title>
+<style>
+
+*{
+    font-family: 'Poppins', sans-serif;
+    margin:0; padding:0;
+    box-sizing: border-box;
+    outline: none; border:none;
+    text-decoration: none;
+    text-transform: capitalize;
+    transition: .2s linear;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298, #4e73df);
+    background-size: 400% 400%; /* Optional: For animated gradient */
+    animation: gradientAnimation 15s ease infinite;
+}
+
+/* Optional Animation for a dynamic gradient effect */
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+.container{
+    padding: 5px 0px;
+    padding-bottom: 100px;
+    margin-top:100px;
+    margin-left:0px;
+    margin-right:0px;
+}
+
+.container .heading{
+    text-align: center;
+    padding: 5px 10px;
+    color: #ffffff;
+    text-shadow: 0 5px 10px rgba(0, 0, 0, 0.491);
+    font-size: 45px;
+}
+
+.container .box-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap:8px;
+    margin-left:2px;
+    margin-right:2px;
+}
+
+.box-container{
+    backdrop-filter: blur(25px);
+    background: rgba(0, 0, 0, 0.2);
+    margin: 0px;
+    padding: 0px;
+    border-radius: auto;
+}
+
+
+.container .box-container .box
+{
+  background-color: #000000a4;
+  backdrop-filter: blur(5px);
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.container .box-container .box img{
+    height: 65px;
+    width: 275px;
+    margin: auto;
+    border-radius: 3px;
+}
+
+.container .box-container h3{
+    color:#ffffff;
+    width:auto;
+    font-size: 20px;
+    padding:3px 0;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.container .box-container p{
+    color:#ffffff;
+    font-size: 19px;
+    line-height: 1.45;
+    padding:3px 0;
+    margin: 0px 5px;
+}
+
+.container .box-container .btn{
+    margin: 8px;
+    display: inline-block;
+    background:#0F0F0F;
+    color:#fff;
+    font-size: 14px;
+    border-radius: 22px;
+    padding: 12px 20px;
+}
+
+.container .box-container .box .btn:hover{
+    letter-spacing: 1px;
+}
+
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1rem;
+    z-index: 1;
+    background-image: linear-gradient(180deg, #1d1e22e1, rgba(52, 53, 56, 0.267), transparent);
+    padding: 20px;
+}
+
+header ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+header ul li {
+    margin: 0 10px;
+}
+
+header ul li a {
+    position: relative;
+    color: #f4f4f4;
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+header ul li a::after {
+    position: absolute;
+    content: "";
+    left: 0;
+    bottom: -3px;
+    width: 0;
+    height: 3px;
+    transition: all 0.2s linear;
+}
+
+header ul li a:hover::after {
+    width: 100%;
+    background-color: #ff0000;
+}
+
+header h2 {
+    color: #ffffff;
+}
+
+.logo {
+  width: 50px;
+  cursor: pointer;
+  transition: 3.5s;
+  margin: 1px;
+}
+
+.loading-text {
+    font-size: 18px;
+    color: white;
+    margin-top: 20px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.8);
+}
+
+button:active {
+    transform: scale(0.98);
+    background-color: #3e8e41;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.loader {
+    width: 10px; /* Size of the loader */
+    height: 10px; /* Size of the loader */
+    border-radius: 50%;
+    background-color: #0afd16; /* Color of the loader */
+    animation: pulsate 1.5s infinite;
+    margin: 0 10px; /* Space around the loader */
+}
+
+@keyframes pulsate {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+
+@media (max-width:768px){
+    .container{
+        padding:5px;
+    }
+}
+</style>
+</head>
+<body>
+    <header>
+        <a class="logo" href="/home"><img class="logo" src="{{ url_for('static', filename='logo.png') }}"></a>
+        <div class="loader" id="loader"></div><div class="loader" id="loader"></div><div class="loader" id="loader"></div>
+        <ul>
+            <li><a href="/updatep"><button>Credentials</button></a></li>
+            <li><a href="/about"><button>About</button></a></li>
+        </ul>
+    </header>
+
+    <div class="container">
+        <div class="box-container">
+            <div class="box">
+                <div class="loading-text" id="loadingText" style="display: none;"></div>
+            </div>        
+        </div>
+        <div class="box-container">
+            <div class="box">
+                <img src="{{ url_for('static', filename='w1.png') }}">
+                <ul>
+                    <li><p>Current Power: {{ data.website_1.currentPower }}</p></li>
+                    <li><p>Rated Power: {{ data.website_1.ratedPower }}</p></li>
+                    <li><p>Generation Today: {{ data.website_1.generationToday }}</p></li>
+                    <li><p>Generation This Month: {{ data.website_1.generationThisMonth }}</p></li>
+                    <li><p>Total Generation: {{ data.website_1.totalGeneration }}</p></li>
+                    <li><p>Revenue Today: {{ data.website_1.revenueToday }}</p></li>
+                    <li><p>Revenue This Month: {{ data.website_1.revenueThisMonth }}</p></li>
+                    <li><p>Total Revenue: {{ data.website_1.totalRevenue }}</p></li>
+                    <li><p>Last Update : {{ data.last_time_website_1 }}</p></li>
+                </ul>
+            </div>
+
+            <div class="box">
+                <img src="{{ url_for('static', filename='w2.png') }}">
+                <ul>
+                    <li><p>Today: {{ data.website_2.EToday }}</p></li>
+                    <li><p>This Month: {{ data.website_2.EMonth }}</p></li>
+                    <li><p>This Year: {{ data.website_2.EYear }}</p></li>
+                    <li><p>Total: {{ data.website_2.ETotal }}</p></li>
+                    <li><p>Energy Balance Today: {{ data.website_2.EnergyBalanceToday }}</p></li>
+                    <li><p>Current Power: {{ data.website_2.CurrentPower }}</p></li>
+                    <li><p>Last Update : {{ data.last_time_website_2 }}</p></li>
+                </ul>
+            </div>
+
+                <div class="box">
+                    <img src="{{ url_for('static', filename='w3.png') }}"> <!-- Adjust the image path as needed -->
+                    <ul>
+                        <li><p>Capacity: {{ data.website_3.capacity }}</p></li>
+                        <li><p>Power: {{ data.website_3.power }}</p></li>
+                        <li><p>Daily Energy: {{ data.website_3.daily_energy }}</p></li>
+                        <li><p>Monthly Energy: {{ data.website_3.monthly_energy }}</p></li>
+                        <li><p>Yearly Energy: {{ data.website_3.yearly_energy }}</p></li>
+                        <li><p>Total Energy: {{ data.website_3.total_energy }}</p></li>
+                        <li><p>Operation Hours: {{ data.website_3.operation_hours }}</p></li>
+                        <li><p>Location: {{ data.website_3.location }}</p></li>
+                        <li><p>Status: {{ data.website_3.status }}</p></li>
+                    </ul>
+                </div>
+        </div>
+
+
+        {% if data.alert_data %}
+        <div class="box-container">
+            <div class="box">
+            <p>Please Maintain a Good Internet Conection</p>
+            <p>{{ data.alert_data }}</p>
+            <p> Trying to Resolve the issues ...</p>
+            <p>Automatically Refresh in 10 secounds</p>
+           
+            </div>        
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

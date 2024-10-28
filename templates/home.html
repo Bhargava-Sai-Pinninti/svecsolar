@@ -2,366 +2,281 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solar Monitor</title>
-<style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-*{
-    font-family: 'Poppins', sans-serif;
-    margin:0; padding:0;
-    box-sizing: border-box;
-    outline: none; border:none;
-    text-decoration: none;
-    text-transform: capitalize;
-    transition: .2s linear;
-}
+        body {
+            background: linear-gradient(145deg, #0f0f0f, #3d3d3d);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #1e3c72, #2a5298, #4e73df);
-    background-size: 400% 400%; /* Optional: For animated gradient */
-    animation: gradientAnimation 15s ease infinite;
-}
+        header {
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            background-color: rgba(20, 20, 20, 0.9);
+            backdrop-filter: blur(15px);
+            z-index: 10;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
+        }
 
-/* Optional Animation for a dynamic gradient effect */
-@keyframes gradientAnimation {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
 
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
 
-.container{
-    padding: 5px 0px;
-    padding-bottom: 100px;
-    margin-top:100px;
-    margin-left:0px;
-    margin-right:0px;
-}
+        .nav-links li {
+            margin-left: 10px;
+        }
 
-.container .heading{
-    text-align: center;
-    padding: 5px 10px;
-    color: #ffffff;
-    text-shadow: 0 5px 10px rgba(0, 0, 0, 0.491);
-    font-size: 45px;
-}
+        .nav-links a button {
+            background-color: transparent;
+            border: 2px solid #61dafb;
+            color: white;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 20px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
 
-.container .box-container{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-    gap:8px;
-    margin-left:2px;
-    margin-right:2px;
-}
+        .nav-links a button:hover {
+            background-color: #303233;
+            transform: translateY(-4px);
+        }
 
-.box-container{
-    backdrop-filter: blur(25px);
-    background: rgba(0, 0, 0, 0.2);
-    margin: 0px;
-    padding: 0px;
-    border-radius: auto;
-}
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
 
+        .box {
+            margin: 5px;
+            background: linear-gradient(145deg, #252525, #1a1a1a);
+            border-radius: 15px;
+            padding: 5px;
+            width: 370px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5), -5px -5px 15px rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
 
-.container .box-container .box
-{
-  background-color: #000000a4;
-  backdrop-filter: blur(5px);
-  border-radius: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+        .box img {
+            max-width: 100%; /* Set maximum width to avoid overflow */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 8px;
+            margin : auto;
+        }
 
-.container .box-container .box img{
-    height: 40px;
-    width: auto;
-    margin: 15px;
+        .data-grid {
+            display: flex;
+            flex-wrap: wrap; /* Allows items to wrap */
+            gap: 4px; /* Gap between items */
+            margin-top: 4px;
+        }
+
+        .data-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
     border-radius: 8px;
-}
-
-.container .box-container h3{
-    color:#ffffff;
-    width:auto;
-    font-size: 20px;
-    padding:3px 0;
-    text-decoration: underline;
-    font-weight: bold;
-}
-
-.container .box-container p{
-    color:#ffffff;
-    font-size: 19px;
-    line-height: 1.45;
-    padding:3px 0;
-    margin: 0px 5px;
-}
-
-.container .box-container .btn{
-    margin: 8px;
-    display: inline-block;
-    background:#0F0F0F;
-    color:#fff;
-    font-size: 14px;
-    border-radius: 22px;
-    padding: 12px 20px;
-}
-
-.container .box-container .box .btn:hover{
-    letter-spacing: 1px;
-}
-
-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    align-items: center;
+    flex: 1 1 100%; /* One item per row */
+    display: flex; /* Use flexbox for alignment */
     justify-content: space-between;
-    font-size: 1rem;
-    z-index: 1;
-    background-image: linear-gradient(180deg, #1d1e22e1, rgba(52, 53, 56, 0.267), transparent);
-    padding: 20px;
-}
-
-header ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
     align-items: center;
-    justify-content: flex-end;
-}
-
-header ul li {
-    margin: 0 10px;
-}
-
-header ul li a {
-    position: relative;
-    color: #f4f4f4;
-    font-weight: 600;
-    text-decoration: none;
-    text-transform: uppercase;
-}
-
-header ul li a::after {
-    position: absolute;
-    content: "";
-    left: 0;
-    bottom: -3px;
-    width: 0;
-    height: 3px;
-    transition: all 0.2s linear;
-}
-
-header ul li a:hover::after {
-    width: 100%;
-    background-color: #ff0000;
-}
-
-header h2 {
-    color: #ffffff;
-}
-
-.logo {
-  width: 50px;
-  cursor: pointer;
-  transition: 3.5s;
-  margin: 1px;
-}
-
-.loading-text {
-    font-size: 18px;
-    color: white;
-    margin-top: 20px;
-}
-
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-button:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
-}
-
-button:focus {
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 255, 0, 0.8);
-}
-
-button:active {
-    transform: scale(0.98);
-    background-color: #3e8e41;
-}
-
-ul {
-  list-style-type: none;
-}
-
-.loader {
-    width: 10px; /* Size of the loader */
-    height: 10px; /* Size of the loader */
-    border-radius: 50%;
-    background-color: #0afd16; /* Color of the loader */
-    animation: pulsate 1.5s infinite;
-    margin: 0 10px; /* Space around the loader */
-}
-
-@keyframes pulsate {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.5);
-        opacity: 0.5;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+    font-size: 18px; /* Adjust font size if necessary */
 }
 
 
+        .data-label {
+            font-weight: 500;
+            color: #61dafb;
+        }
 
-@media (max-width:768px){
-    .container{
-        padding:5px;
-    }
-}
-</style>
+        .footer {
+            background-color: #1c1c1c;
+            text-align: center;
+            padding: 5px 0;
+            margin-top: auto;
+        }
+
+        .footer p {
+            color: #aaa;
+        }
+
+        @media (max-width: 768px) {
+            .data-grid {
+                grid-template-columns: 1fr; /* Single column on small screens */
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <a class="logo" href="/home"><img class="logo" src="{{ url_for('static', filename='logo.png') }}"></a>
-        <div class="loader" id="loader"></div><div class="loader" id="loader"></div><div class="loader" id="loader"></div>
-        <ul>
+        <a class="logo" href="/home">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+        </a>
+        <ul class="nav-links">
             <li><a href="/updatep"><button>Credentials</button></a></li>
             <li><a href="/about"><button>About</button></a></li>
         </ul>
     </header>
 
     <div class="container">
-        <div class="box-container">
-            <div class="box">
-                <div class="loading-text" id="loadingText" style="display: none;"></div>
-            </div>        
-        </div>
-        <div class="box-container">
-            <div class="box">
-                <img src="{{ url_for('static', filename='w1.png') }}">
-                <ul>
-                    <li><p>Current Power: {{ data.website_1.currentPower }}</p></li>
-                    <li><p>Rated Power: {{ data.website_1.ratedPower }}</p></li>
-                    <li><p>Generation Today: {{ data.website_1.generationToday }}</p></li>
-                    <li><p>Generation This Month: {{ data.website_1.generationThisMonth }}</p></li>
-                    <li><p>Total Generation: {{ data.website_1.totalGeneration }}</p></li>
-                    <li><p>Revenue Today: {{ data.website_1.revenueToday }}</p></li>
-                    <li><p>Revenue This Month: {{ data.website_1.revenueThisMonth }}</p></li>
-                    <li><p>Total Revenue: {{ data.website_1.totalRevenue }}</p></li>
-                    <li><p>Last Update : {{ data.last_time_website_1 }}</p></li>
-                </ul>
+        <div class="box">
+            <center><img src="{{ url_for('static', filename='w1.png') }}"></center>
+            <div class="data-grid">
+                <div class="data-item">
+                    <span class="data-label">Current Power:</span>
+                    <span>{{ data.website_1.currentPower }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Rated Power:</span>
+                    <span>{{ data.website_1.ratedPower }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Generation Today:</span>
+                    <span>{{ data.website_1.generationToday }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Generation This Month:</span>
+                    <span>{{ data.website_1.generationThisMonth }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Total Generation:</span>
+                    <span>{{ data.website_1.totalGeneration }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Revenue Today:</span>
+                    <span>{{ data.website_1.revenueToday }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Revenue This Month:</span>
+                    <span>{{ data.website_1.revenueThisMonth }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Total Revenue:</span>
+                    <span>{{ data.website_1.totalRevenue }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Last Update:</span>
+                    <span>{{ data.last_time_website_1 }}</span>
+                </div>
             </div>
+        </div>
 
-            <div class="box">
-                <img src="{{ url_for('static', filename='w2.svg') }}">
-                <ul>
-                    <li><p>Today: {{ data.website_2.EToday }}</p></li>
-                    <li><p>This Month: {{ data.website_2.EMonth }}</p></li>
-                    <li><p>This Year: {{ data.website_2.EYear }}</p></li>
-                    <li><p>Total: {{ data.website_2.ETotal }}</p></li>
-                    <li><p>Energy Balance Today: {{ data.website_2.EnergyBalanceToday }}</p></li>
-                    <li><p>Current Power: {{ data.website_2.CurrentPower }}</p></li>
-                    <li><p>Last Update : {{ data.last_time_website_2 }}</p></li>
-                </ul>
+        <div class="box">
+            <center><img src="{{ url_for('static', filename='w2.png') }}"></center>
+            <div class="data-grid">
+                <div class="data-item">
+                    <span class="data-label">Today:</span>
+                    <span>{{ data.website_2.EToday }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">This Month:</span>
+                    <span>{{ data.website_2.EMonth }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">This Year:</span>
+                    <span>{{ data.website_2.EYear }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Total:</span>
+                    <span>{{ data.website_2.ETotal }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Energy Balance Today:</span>
+                    <span>{{ data.website_2.EnergyBalanceToday }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Current Power:</span>
+                    <span>{{ data.website_2.CurrentPower }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Last Update:</span>
+                    <span>{{ data.last_time_website_2 }}</span>
+                </div>
             </div>
         </div>
-        {% if data.alert_data %}
-        <div class="box-container">
-            <div class="box">
-            <p>Please Maintain a Good Internet Conection</p>
-            <p>{{ data.alert_data }}</p>
-            <p> Trying to Resolve the issues ...</p>
-            <p>Automatically Refresh in 10 secounds</p>
-           
-            </div>        
+
+        <div class="box">
+            <center><img src="{{ url_for('static', filename='w3.png') }}"></center>
+            <div class="data-grid">
+                <div class="data-item">
+                    <span class="data-label">Capacity:</span>
+                    <span>{{ data.website_3.capacity }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Power:</span>
+                    <span>{{ data.website_3.power }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Daily Energy:</span>
+                    <span>{{ data.website_3.daily_energy }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Monthly Energy:</span>
+                    <span>{{ data.website_3.monthly_energy }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Yearly Energy:</span>
+                    <span>{{ data.website_3.yearly_energy }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Total Energy:</span>
+                    <span>{{ data.website_3.total_energy }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Operation Hours:</span>
+                    <span>{{ data.website_3.operation_hours }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Location:</span>
+                    <span>{{ data.website_3.location }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Status:</span>
+                    <span>{{ data.website_3.status }}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Last Update:</span>
+                    <span>{{ data.last_time_website_3 }}</span>
+                </div>
+            </div>
         </div>
-        {% endif %}
     </div>
 
+    <footer class="footer">
+        <p>&copy; 2024 Solar Monitor. All rights reserved.</p>
+    </footer>
     <script>
-        window.addEventListener('DOMContentLoaded', (event) => {
-            // Immediately trigger request to /updatedata
-            updateData();
-        });
-
-        function updateData() {
-            // Hide the loading text and show the loader
-            document.getElementById("loadingText").style.display = "none";
-            document.querySelectorAll('.loader').forEach(loader => loader.style.display = "block");
-
-            fetch('/updatedata')
-                .then(response => {
-                    if (!response.ok) {
-                        // If the response is not OK, throw an error
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Hide the loaders when data is done updating
-                    document.querySelectorAll('.loader').forEach(loader => loader.style.display = "none");
-                    if (data.status === 'done') {
-                        // Reload the page to display updated data
-                        location.reload();
-                    } else {
-                        // Display the error message for unexpected status
-                        document.getElementById("loadingText").innerHTML = "An error occurred while updating data.";
-                        document.getElementById("loadingText").style.display = "block";
-
-                        // Reload the page after 10 seconds
-                        setTimeout(() => {
-                            location.reload();
-                        }, 10000);
-                    }
-                })
-                .catch(error => {
-                    // Hide the loaders and show the error message
-                    document.querySelectorAll('.loader').forEach(loader => loader.style.display = "none");
-                    document.getElementById("loadingText").innerHTML = "An error occurred: " + error.message;
-                    document.getElementById("loadingText").style.display = "block";
-
-                    // Reload the page after 10 seconds
-                    setTimeout(() => {
-                        location.reload();
-                    }, 10000);
-                });
-        }
+        // Reload the page every 60 seconds (60000 milliseconds)
+        setInterval(() => {
+            location.reload();
+        }, 60000);
     </script>
+    
 </body>
 </html>
