@@ -1,12 +1,13 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template
 import threading
-from datetime import datetime 
+from datetime import datetime, time 
 import json
 import os
 import asyncio
 from pyppeteer import launch
 
 app = Flask(__name__)
+
 # Store global references to browser and page
 browser_1,page_1 = None,None
 # Store global references to browser and page
@@ -79,6 +80,7 @@ async def scrape_data_1():
                     totalRevenue: document.querySelector('.val_device_plantMTotal')?.innerText || "N/A"
                 };
             }''')
+        print("<<s1>> yes data getted sucessfully \n")
         return power_data
     except Exception as e:
             if browser_1:
@@ -357,16 +359,21 @@ async def update_data():
         return e
 
 async def run_updates():
-    """Run updates periodically in a loop."""
+    """Run updates periodically in a loop with different intervals based on time."""
     while True:
         try:
-            print("\n started in run_updates()  ---- 1")
-            await update_data()
-            await asyncio.sleep(90)  # Adjust interval as needed
-            print("\n ended in run_updates() ---- end")
+            now = datetime.now().time()
+            if now: # Between 5 AM and 7 PM time(5, 0) <= now < time(19, 0): 
+                print("\n started in run_updates()  ---- 1")
+                await update_data()
+                await asyncio.sleep(90)  # 90 seconds interval
+                print("\n ended in run_updates() ---- end")
+            else:  # Between 7 PM and 5 AM
+                print("\n Out of active hours. Sleeping for 30 minutes.")
+                await asyncio.sleep(7200)  # 240 minutes interval
         except Exception as e:
             print(f"Exception in run_updates: {e}")
-            await asyncio.sleep(5)
+            await asyncio.sleep(5)  # Retry after 5 seconds
             await update_data()
 
 def start_background_task():
@@ -389,64 +396,6 @@ def index():
     except Exception as e:
         print(f"Error extracting data: {e}")
         return str(e)
-    
-# Flask route to display the combined data
-@app.route('/updatedata')
-async def updatedata_m():
-    json_file_path = 'data.json'
-    alert = ""
-    data_website_1, data_website_2 , data_website_3 = None, None ,None
-
-    # Load existing data to preserve in case one website fails
-    if os.path.exists(json_file_path):
-        with open(json_file_path, 'r') as json_file:
-            stored_data = json.load(json_file)
-    else:
-        stored_data = {"website_1": None, "website_2": None, "website_3": None, "last_time_website_1": None, "last_time_website_2": None , "last_time_website_3": None}
-
-    # Run both scraping functions concurrently, but handle their success/failure independently
-    try:
-        data_website_1, data_website_2, data_website_3 = await asyncio.gather(
-            scrape_data_1(),
-            scrape_data_2(),
-            scrape_data_3(),
-            return_exceptions=True  # This ensures exceptions from one task do not stop others
-        )
-        print(data_website_3)
-        # Handle the result of website 1 (Growatt)
-        if isinstance(data_website_1, Exception):  # If website 1 raised an exception
-            alert += "\n Issue in fetching Growatt data. \n"
-        else:  # If website 1 was successful
-            stored_data['website_1'] = data_website_1
-            stored_data['last_time_website_1'] = datetime.now().strftime('%Y-%m-%d / %H:%M')
-
-        # Handle the result of website 2 (Fronius)
-        if isinstance(data_website_2, Exception):  # If website 2 raised an exception
-            alert += "\n Issue fetching Fronius data. \n"
-        else:  # If website 2 was successful
-            stored_data['website_2'] = data_website_2
-            stored_data['last_time_website_2'] = datetime.now().strftime('%Y-%m-%d / %H:%M')
-
-        if isinstance(data_website_3, Exception):  # If website 3 raised an exception
-            alert += "\n Issue fetching iSolar Cloud data. \n"
-        else:  # If website 3 was successful
-            stored_data['website_3'] = data_website_3
-            stored_data['last_time_website_3'] = datetime.now().strftime('%Y-%m-%d / %H:%M')
-
-        
-
-    except Exception as e:
-        alert += f"\nError fetching data: {e}"
-
-    # Add alert messages and save the combined data
-    stored_data["alert_data"] = alert
-
-    # Save the updated data to the JSON file
-    with open(json_file_path, 'w') as json_file:
-        json.dump(stored_data, json_file)
-
-    return jsonify({"status": "done"})
-
 
 # Route for rendering the update page
 @app.route('/updatep', methods=['GET'])
@@ -549,4 +498,4 @@ def about():
 if __name__ == '__main__':
     # Start the background task thread
     threading.Thread(target=start_background_task, daemon=True).start()
-    app.run(debug=True, use_reloader=False)
+    app.run(host="0.0.0.0", port=8080,debug=True, use_reloader=False)
