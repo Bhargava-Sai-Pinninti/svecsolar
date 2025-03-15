@@ -1,11 +1,11 @@
-import asyncio
+from flask import Flask, request, render_template , jsonify
+import threading
+from datetime import datetime, time 
 import json
 import os
-from flask import Flask, render_template, after_this_request, request, render_template, jsonify
+import asyncio
 from pyppeteer import launch
-import threading
 import pytz
-from datetime import datetime
 
 app = Flask(__name__)
 
@@ -15,6 +15,7 @@ browser_1,page_1 = None,None
 browser_2,page_2 = None,None
 # Global variables to store browser and page objects for each website
 browser_3, page_3 = None, None
+
 
 async def login_1():
         try:
@@ -30,7 +31,7 @@ async def login_1():
 
             # Step 1: Navigate to login page
             await page_1.goto("https://server.growatt.com/login", {'waitUntil': 'networkidle2','timeout': 99999})
-            await asyncio.sleep(1)
+            await asyncio.sleep(2)
             # Step 2: Fill in login details
             await page_1.type('#val_loginAccount', creds['user_id'])
             await page_1.type('#val_loginPwd', creds['password'])
@@ -44,15 +45,18 @@ async def login_1():
             
             await page_1.waitForSelector('.btn_toAllDevices', {'visible': True,'timeout': 99999})
             await page_1.click('.btn_toAllDevices')
-            await asyncio.sleep(1)
+            await asyncio.sleep(2)
             # Wait for the device panel to load (increased timeout)
             await page_1.waitForSelector('.devicePageDataPanel', {'visible': True,'timeout': 99999})
-            await asyncio.sleep(1)
+            await asyncio.sleep(2)
             print("\n<<s1>> Login successful! in 1 --- 3")
             return page_1
         except Exception as e:
-            if browser_1:
-                await browser_1.close()
+            try:
+                if browser_1:
+                    await browser_1.close()
+            except:
+                pass
             browser_1,page_1 = None,None
             print(f"<<S1>> Error in S1 : {e}")
             return e
@@ -69,7 +73,7 @@ async def scrape_data_1():
             print("page1 get from global... 3\n")
             # Step 6: Scrape plant data
             # Step 5: Extract data from the tables
-        await asyncio.sleep(3)
+        await asyncio.sleep(1)
         power_data = await page_1.evaluate('''() => {
                 return {
                     currentPower: document.querySelector('.val_device_plantPac')?.innerText || "N/A",
@@ -85,11 +89,14 @@ async def scrape_data_1():
         print("<<s1>> yes data getted sucessfully \n")
         return power_data
     except Exception as e:
+        try:
             if browser_1:
                 await browser_1.close()
-            browser_1,page_1 = None,None
-            print(f"Error extracting data in 1: {e}")
-            return e
+        except:
+            pass
+        browser_1,page_1 = None,None
+        print(f"Error extracting data in 1: {e}")
+        return e
   
 async def login_2():
     try:
@@ -110,20 +117,23 @@ async def login_2():
             # Fill in login credentials
             await page_2.type('input[name="usernameUserInput"]', creds['user_id'], {'delay': 150})
             await page_2.type('input[name="password"]', creds['password'], {'delay': 150})
-            await asyncio.sleep(1)
+            await asyncio.sleep(2)
 
             # Click login button
             await page_2.waitForSelector('.btn-fro.btn-fro-primary.btn-fro-medium.margin-top-light.keypress-btn', {'visible': True})
             await page_2.click('.btn-fro.btn-fro-primary.btn-fro-medium.margin-top-light.keypress-btn')
-
+            await asyncio.sleep(1)
             # Wait for login to complete
             await page_2.waitForNavigation({'waitUntil': 'networkidle2', 'timeout': 99999})
             print("<S2> Logged in successfully in S2 ----\n")
         
         return page_2  # Return the page object
     except Exception as e:
-        if browser_2:
-                await browser_2.close()
+        try:
+            if browser_2:
+                    await browser_2.close()
+        except:
+            pass
         browser_2,page_2 = None,None
         print(f" <S2> Error in login 2(){e} \n")
         return e
@@ -166,8 +176,11 @@ async def scrape_data_2():
         return power_data
     
     except Exception as e:
-        if browser_2:
-            await browser_2.close()
+        try:
+            if browser_2:
+                await browser_2.close()
+        except:
+            pass
         browser_2,page_2 = None,None
         print(f"Error in  Scrape_data_2(){e} \n")
         return e
@@ -233,11 +246,14 @@ async def login_3():
                 return e
         return page_3  # Return the page object
     except Exception as e:
-                if browser_3:
-                    await browser_3.close()
-                browser_3,page_3 = None,None
-                print(f"<S3> Error during scraping in  login_3(): {e} \n")
-                return e
+        try:
+            if browser_3:
+                await browser_3.close()
+        except:
+            pass
+        browser_3,page_3 = None,None
+        print(f"<S3> Error during scraping in  login_3(): {e} \n")
+        return e
 
 async def scrape_data_3():
     try:
@@ -274,8 +290,11 @@ async def scrape_data_3():
             print("<<S3>> yes done data getted ---- \n")
         return power_data
     except Exception as e:
-        if browser_3:
-                await browser_3.close()
+        try:
+            if browser_3:
+                    await browser_3.close()
+        except:
+            pass
         browser_3,page_3 = None,None
         print(f" <<S3>> Error in Scrape_data_3(): {e} \n")
         return e
@@ -283,6 +302,7 @@ async def scrape_data_3():
 async def update_data():
     global browser_1,page_1,browser_2,page_2,browser_3,page_3
     try:
+        
         with app.app_context():  # Push the app context
             json_file_path = 'data.json'
             alert = ""
@@ -361,65 +381,43 @@ async def update_data():
         return e
 
 async def run_updates():
-    """Run updates periodically."""
-    print("Starting run_updates() loop")  # Debugging print
+    """Run updates periodically in a loop with different intervals based on time."""
     while True:
         try:
-            now = datetime.now().time()
-            if now:
-                print("Active hours - running update_data()")
-                print("\n started in run_updates()  ---- 1")
+            now = datetime.now(pytz.timezone('Asia/Kolkata')).time()
+            if now: # Between 5 AM and 7 PM time(5, 0) <= now < time(19, 0): 
+                print("\n started in run_updates()  ---- 1", flush=True)
                 await update_data()
-                await asyncio.sleep(90)
+                await asyncio.sleep(90)  # 90 seconds interval
                 print("\n ended in run_updates() ---- end")
-            else:
-                print("Out of active hours - sleeping for 2 hours")
-                await asyncio.sleep(7200)
-                await update_data()
+            else:  # Between 7 PM and 5 AM
+                print("\n Out of active hours. Sleeping for 30 minutes.")
+                await asyncio.sleep(7200)  # 240 minutes interval
         except Exception as e:
             print(f"Exception in run_updates: {e}")
-            await asyncio.sleep(5)  # Retry in 5 seconds
+            await asyncio.sleep(5)  # Retry after 5 seconds
             await update_data()
 
 def start_background_task():
     """Start the background update task in a new thread."""
-    print("Starting background task...")  # Debugging print
-
-    # Create a new event loop for the thread
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    # Run the async task in the new loop
     loop.run_until_complete(run_updates())
 
-def schedule_background_task():
-    """Ensure the background task runs only once."""
-    if not hasattr(app, 'task_started'):
-        print("Scheduling background task...")  # Debugging print
-        app.task_started = True  # Mark the task as started
-        threading.Thread(target=start_background_task, daemon=True).start()
-
 @app.route('/')
-def index():
-    print("Handling first request...")  # Debugging print
-    with open('data.json', 'r') as json_file:
-        stored_data = json.load(json_file)
-
-    @after_this_request  # Hook to schedule the background task
-    def start_task(response):
-        print("After request hook triggered")  # Debugging print
-        schedule_background_task()
-        return response
-
-    return render_template('home.html', data=stored_data)
-
 @app.route('/home')
-def home():
-    print("Handling first request...")  # Debugging print
-    with open('data.json', 'r') as json_file:
-        stored_data = json.load(json_file)
+def index():
+    try:
+        json_file_path = 'data.json'
+            # Read the data from data.json and pass it to the template
+        with open(json_file_path, 'r') as json_file:
+            stored_data = json.load(json_file)
+        # Render the results on the index.html page
 
-    return render_template('home.html', data=stored_data)
-
+        return render_template('home.html', data=stored_data)
+    except Exception as e:
+        print(f"Error extracting data: {e}")
+        return str(e)
 
 # Route for rendering the update page
 @app.route('/updatep', methods=['GET'])
@@ -519,7 +517,6 @@ def update_website3():
 def about():
     return render_template('about.html')
 
-
 @app.route('/data', methods=['GET','POST'])
 def data():
     try:
@@ -528,11 +525,12 @@ def data():
         with open(json_file_path, 'r') as json_file:
             stored_data = json.load(json_file)
         # Render the results on the index.html page
-            return jsonify(stored_data)
+        return jsonify(stored_data)
     except Exception as e:
         print(f"Error extracting data: {e}")
         return str(e)
 
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True, use_reloader=False)
+    # Start the background task thread
+    threading.Thread(target=start_background_task, daemon=True).start()
+    app.run(host="0.0.0.0", port=8080,debug=True, use_reloader=False)
